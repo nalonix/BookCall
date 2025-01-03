@@ -19,6 +19,7 @@ class User extends Authenticatable
         'avatar',
         'bio',
         'durations',
+        'buffer_time'
     ];
 
     protected $hidden = [

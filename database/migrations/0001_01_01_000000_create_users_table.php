@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('password');
             // Bookings : relation with booking model
             $table->json('durations')->default('[30]'); // Array of integers
+            $table->integer('buffer_time')->default(15); // Integer
             $table->rememberToken();
             $table->timestamps();
         });

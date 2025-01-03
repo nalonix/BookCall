@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class DateSelector extends Component
@@ -40,6 +41,12 @@ class DateSelector extends Component
         $this->selectedDate = $date;
         // dd($this->selectedDate);
         $this->dispatch('dateSelected', $this->selectedDate);
+    }
+
+    #[On('grabBookingData')]
+    public function grabBookingData()
+    {
+        session('bookingDate.selectedDate', $this->selectedDate);
     }
 
     public function render()

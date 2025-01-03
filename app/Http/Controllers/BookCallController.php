@@ -24,6 +24,11 @@ class BookCallController extends Controller
             return array_search($availability->day, $dayOrder);
         });
 
+        // Store user data on global session
+        session(['user' => $user]);
+        $availableDays = $sortedAvailabilities->pluck('day')->unique();
+        session(['availableDays' => $availableDays]);
+
         return view('bookcall', ['user' => $user, 'availabilities' => $sortedAvailabilities]);
     }
 }

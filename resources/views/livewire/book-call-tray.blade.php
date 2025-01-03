@@ -5,4 +5,7 @@
     <livewire:call-meta-data />
     <livewire:date-selector />
     <livewire:time-selector />
+    <div>
+        <button wire:click="bookCall">Book Call</button>
+    </div>
 </div>
