@@ -24,11 +24,36 @@ class BookCallController extends Controller
             return array_search($availability->day, $dayOrder);
         });
 
-        // Store user data on global session
-        session(['user' => $user]);
-        $availableDays = $sortedAvailabilities->pluck('day')->unique();
-        session(['availableDays' => $availableDays]);
+        // Transform sorted availabilities into the desired format
+        $dailyTimeRange = [];
+        foreach ($sortedAvailabilities as $availability) {
+            $day = $availability->day; // e.g., "Monday"
+            $startTime = $availability->start_time; // e.g., "09:00:00"
+            $endTime = $availability->end_time; // e.g., "17:00:00"
 
-        return view('bookcall', ['user' => $user, 'availabilities' => $sortedAvailabilities]);
+            // Convert times to a more readable format (optional)
+            $startTime = date('H:i', strtotime($startTime));
+            $endTime = date('H:i', strtotime($endTime));
+
+            // Store in the dailyTimeRange array
+            $dailyTimeRange[$day] = [
+                'start_time' => $startTime,
+                'end_time' => $endTime,
+            ];
+        }
+
+        // Store user data on global session
+        // session(['user_id' => $user->id]);
+        // Store user data in the session
+        session([
+            'user_id' => $user->id,
+            'user_name' => $user->username,
+            'buffer_time' => $user->buffer_time,
+            'durations' => $user->durations,
+            'availableDays' => $sortedAvailabilities->pluck('day')->unique(),
+            'dailyTimeRange' => $dailyTimeRange,
+        ]);
+
+        return view('bookcall', ['user_id' => $user->id]);
     }
 }

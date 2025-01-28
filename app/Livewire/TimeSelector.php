@@ -21,8 +21,8 @@ class TimeSelector extends Component
     {
         // Calculate the next available date
         $this->selectedDate = $this->getNextAvailableDate();
-        // Initialize buffer time
-        $this->buffer_time = session('user')->buffer_time;
+        // // Initialize buffer time
+        $this->buffer_time = session('buffer_time');
         // Update the date and fetch availability
         $this->updateDate($this->selectedDate);
     }
@@ -32,9 +32,11 @@ class TimeSelector extends Component
     {
         $availableDays = session('availableDays')->toArray();
         $date = now()->addDay();
+        $stopper = 0;
 
-        while (!in_array($date->format('l'), $availableDays)) {
+        while (!in_array($date->format('l'), $availableDays) && $stopper < 10) {
             $date->addDay();
+            $stopper++;
         }
 
         return $date->format('Y-m-d');
@@ -51,21 +53,43 @@ class TimeSelector extends Component
     private function calculateTimeslots()
     {
         $timeslots = [];
-        $accum = date('H:i:s', strtotime($this->dayAvailability->start_time));
 
-        while ($accum <= date('H:i:s', strtotime($this->dayAvailability->end_time))) {
-            $startTime = $accum;
-            $accum = date('H:i:s', strtotime($accum) + ($this->duration * 60));
-            $endTime = $accum;
-            $accum = date('H:i:s', strtotime($accum) + ($this->buffer_time * 60));
+        // Ensure dayAvailability is set and has valid start and end times
+        if (!$this->dayAvailability || !isset($this->dayAvailability['start_time'], $this->dayAvailability['end_time'])) {
+            return $timeslots; // Return empty if no availability
+        }
 
-            if (!in_array($startTime, $this->bookedTimeslots)) {
-                $timeslots[] = $startTime . ' - ' . $endTime;
+        $startTime = strtotime($this->dayAvailability['start_time']);
+        $endTime = strtotime($this->dayAvailability['end_time']);
+
+        // Ensure duration and buffer time are valid positive numbers
+        if ($this->duration <= 0 || $this->buffer_time < 0) {
+            return $timeslots; // Return empty if invalid duration or buffer time
+        }
+
+        $accum = $startTime;
+
+        while ($accum + ($this->duration * 60) <= $endTime) {
+            $slotStart = date('H:i:s', $accum);
+            $slotEnd = date('H:i:s', $accum + ($this->duration * 60));
+
+            // Ensure time slot does not exceed end_time
+            if (strtotime($slotEnd) > $endTime) {
+                break;
             }
+
+            // Only add if not booked
+            if (!in_array($slotStart, $this->bookedTimeslots)) {
+                $timeslots[] = "$slotStart - $slotEnd";
+            }
+
+            // Move to the next slot, considering buffer time
+            $accum += ($this->duration * 60) + ($this->buffer_time * 60);
         }
 
         return $timeslots;
     }
+
 
     // Update date and fetch availability and bookings
     #[On('dateSelected')]
@@ -73,8 +97,9 @@ class TimeSelector extends Component
     {
         $this->selectedDate = $date;
         $day = date('l', strtotime($date));
-        $this->dayAvailability = Availability::where('day', $day)->where('user_id', session('user')->id)->first();
-        $this->bookedTimeslots = Booking::where('date', $date)->where('user_id', session('user')->id)->pluck('start_time')->toArray();
+        $dailyTimeRanges = session('dailyTimeRange');
+        $this->dayAvailability = $dailyTimeRanges[$day] ?? null;
+        $this->bookedTimeslots = Booking::where('date', $date)->where('user_id', session('user_id'))->pluck('start_time')->toArray();
     }
 
     // Update duration

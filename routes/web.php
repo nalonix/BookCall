@@ -13,7 +13,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/counter', DateSelector::class)->name('counter');
+// Route::get('/counter', DateSelector::class)->name('counter');
 
 Route::get('/booked', function () {
     if (request()->query('message') !== 'booking complete') {
@@ -21,6 +21,14 @@ Route::get('/booked', function () {
     }
     return view('booked');
 })->name('booked');
+
+
+// Wildcard route for booking calls
+Route::get('/u/{username}', [BookCallController::class, 'index'])
+    ->where('username', '[a-zA-Z0-9_-]+')
+    ->name('bookcall');
+
+
 
 // Auth routes for guests
 Route::middleware('guest')->group(function () {
@@ -52,8 +60,3 @@ Route::middleware('auth')->group(function () {
     Route::patch('/bookings/{booking}/confirm', [UserBookingController::class, 'confirm'])->name('bookings.confirm');
     Route::patch('/bookings/{booking}/cancel', [UserBookingController::class, 'cancel'])->name('bookings.cancel');
 });
-
-// Wildcard route for booking calls
-Route::get('/{username}', [BookCallController::class, 'index'])
-    ->where('username', '[a-zA-Z0-9_-]+')
-    ->name('bookcall.index');

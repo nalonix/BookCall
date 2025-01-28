@@ -4,8 +4,6 @@
     {{ date('l', strtotime($selectedDate)) }}
     {{ date('j', strtotime($selectedDate)) }}
     @if($dayAvailability)
-    {{ $dayAvailability->start_time }}
-    {{ $dayAvailability->end_time }}
     <br>
     <div class="flex flex-col gap-3 w-fit p-3 border">
         @foreach($timeslots as $timeslot)

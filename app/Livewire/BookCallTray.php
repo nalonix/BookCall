@@ -18,6 +18,7 @@ class BookCallTray extends Component
         'date' => '',
         'time' => '',
     ];
+
     public function bookCall()
     {
         // TODO: Validation booking formData
@@ -27,28 +28,29 @@ class BookCallTray extends Component
 
         // Insert the form data into the database
         // TODO: extract user id from auth sessoin
-        Booking::create([
-            'user_id' => session('user')->id,
+        $res = Booking::create([
+            'user_id' => session('user_id'),
             'client_name' => $this->formData['name'],
             'client_email' => $this->formData['email'],
             'title' => $this->formData['title'],
             'description' => $this->formData['description'],
-            'meeting_link' => 'https://meet.google.com/abc',
+            'meeting_link' => '',
             'duration' => $this->formData['duration'],
             'date' => $this->formData['date'],
             'start_time' => $startTime,
             'end_time' => $endTime,
         ]);
 
+        dd($res->toArray());
+
         return redirect('/booked', ['message' => 'booking complete', 'bookingData' => $this->formData]);
     }
 
-    // #[On('inputChange')]
-    // public function inputChange($propertyName, $value)
-    // {
-    //     $this->formData[$propertyName] = $value;
-    //     // $this->dispatch('inputChange', $propertyName, $value);
-    // }
+    #[On('inputChange')]
+    public function inputChange($propertyName, $value)
+    {
+        $this->formData[$propertyName] = $value;
+    }
 
     public function render()
     {

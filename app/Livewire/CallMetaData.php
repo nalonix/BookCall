@@ -13,14 +13,14 @@ class CallMetaData extends Component
 
     public function onChange($propertyName, $value)
     {
-        $this->dispatch('inputChange', $propertyName, $value)->to(BookCallTray::class);
+        $this->dispatch('inputChange', $propertyName, $value);
         // dd($propertyName, $this->$propertyName);
     }
 
     public function mount()
     {
         // Ensure durations are available
-        $this->durations = session('user')->durations ?? [];
+        $this->durations = session('durations') ?? [];
         if (!empty($this->durations)) {
             $this->selectedDuration = $this->durations[0];
         }

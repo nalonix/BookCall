@@ -71,8 +71,20 @@ class UserProfileController extends Controller
 
     public function destroy(Request $request)
     {
-        dd("delete user account");
+        if (Auth::guest()) {
+            return redirect('/login');
+        }
+        if (Auth::user()->id !== $request->user()->id) {
+            return redirect('/')->with('error', 'You are not authorized to delete this user.');
+        }
+
+
+        // Delete user
         $user = Auth::user();
+        if (!$user instanceof User) {
+            abort(500, 'User instance not found');
+        }
+
         $user->delete();
         return redirect('/')->with('success', 'User deleted successfully!');
     }
