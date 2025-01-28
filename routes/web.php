@@ -16,17 +16,17 @@ Route::get('/', function () {
 // Route::get('/counter', DateSelector::class)->name('counter');
 
 Route::get('/booked', function () {
-    if (request()->query('message') !== 'booking complete') {
-        return redirect('/')->with('error', 'Invalid booking confirmation.');
+    // Check if the message is exactly 'booking complete'
+    if (session('message') !== 'booking complete') {
+        // session('message', '');
+        return redirect('/')->with('error', 'Unauthorized access.');
     }
+
+    // If the message is correct, show the booked view
     return view('booked');
 })->name('booked');
 
 
-// Wildcard route for booking calls
-Route::get('/u/{username}', [BookCallController::class, 'index'])
-    ->where('username', '[a-zA-Z0-9_-]+')
-    ->name('bookcall');
 
 
 
@@ -60,3 +60,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/bookings/{booking}/confirm', [UserBookingController::class, 'confirm'])->name('bookings.confirm');
     Route::patch('/bookings/{booking}/cancel', [UserBookingController::class, 'cancel'])->name('bookings.cancel');
 });
+
+
+// Wildcard route for booking calls
+Route::get('/{username}', [BookCallController::class, 'index'])
+    ->where('username', '[a-zA-Z0-9_-]+')
+    ->name('bookcall');

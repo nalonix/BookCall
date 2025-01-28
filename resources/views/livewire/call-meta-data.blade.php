@@ -1,7 +1,10 @@
 <div>
     <h1>Call Meta Data</h1>
     <div class="flex flex-col max-w-xl gap-4 p-3 border">
-        <div class="w-14 h-14 rounded-md bg-white">Avatar</div>
+        <div class="preview w-24 h-24 bg-white rounded-md overflow-hidden border border-gray-300">
+            <img id="avatar-preview" src="{{ asset('storage/' . session('user_avatar')) }}"
+                alt="Profile Picture" class="w-full h-full object-cover">
+        </div>
 
         <div class="flex flex-wrap gap-4">
             @foreach($durations as $duration)

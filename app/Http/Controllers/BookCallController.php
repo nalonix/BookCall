@@ -48,6 +48,7 @@ class BookCallController extends Controller
         session([
             'user_id' => $user->id,
             'user_name' => $user->username,
+            'user_avatar' => $user->avatar,
             'buffer_time' => $user->buffer_time,
             'durations' => $user->durations,
             'availableDays' => $sortedAvailabilities->pluck('day')->unique(),

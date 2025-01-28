@@ -1,9 +1,12 @@
 <x-user-layout>
+    <div class="p-2">
+        <h1 class="text-5xl font-bold text-black dark:text-white border border-zinc-700/80 rounded-md p-2">Profile</h1>
+    </div>
     <form method="POST" action="/profile" enctype="multipart/form-data" class="w-full p-2">
         @csrf
         @method('PATCH') <!-- Use PUT or PATCH for updating the profile -->
-        <div class="p-2 md:p-4 border border-gray-900/10 dark:border-white/10 rounded-md mb-6">
-            <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
+        <div class="p-2 md:p-4 border border-zinc-700/80 dark:border-zinc-700/80 rounded-md mb-6">
+            <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
                 <!-- Avatar Upload -->
                 <div class="sm:col-span-6 flex">
                     <div class="preview w-24 h-24 bg-white rounded-md overflow-hidden border border-gray-300">
@@ -70,45 +73,10 @@
 
                 <!-- Buttons -->
                 <div class="sm:col-span-6 flex justify-between gap-4">
-                    <a href="/" class="flex justify-center w-full px-3 py-2 rounded-md text-center text-sm font-semibold bg-zinc-900 dark:bg-zinc-700 text-white dark:text-white hover:bg-zinc-800 dark:hover:bg-zinc-600">Cancel</a>
+                    <a href="#" class="flex justify-center w-full px-3 py-2 rounded-md text-center text-sm font-semibold bg-zinc-900 dark:bg-zinc-700 text-white dark:text-white hover:bg-zinc-800 dark:hover:bg-zinc-600">Cancel</a>
                     <button type="submit" class="w-full rounded-md bg-black dark:bg-white px-3 py-2 font-semibold text-white dark:text-black text-sm shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Update Profile</button>
                 </div>
             </div>
         </div>
     </form>
-
-    <!-- Delete Account Section -->
-    <!-- <div class="flex flex-col rounded-md p-2 pt-0">
-        <div class="p-3 md:p-4 pt-2 border border-red-700/30 rounded-md">
-            <x-form-label class="!text-red-600 !dark:text-red-600 font-semibold text-xl">Danger Zone</x-form-label>
-            <div class="mt-2">
-                <p class="text-red-600 pb-2 text-sm">
-                    This action will permanently delete your account and free up the username for others to use.
-                </p>
-                <x-confirmation-popup
-                    id="delete-account"
-                    type="danger"
-                    triggerText="Delete Account"
-                    popupHeader="Confirm Deletion"
-                    popupMessage="Are you sure you want to delete your account? This action cannot be undone.">
-                    <form id="delete-form" method="POST" action="/profile">
-                        @csrf
-                        @method('DELETE')
-
-                        <div class="mt-4 flex justify-end space-x-3">
-                            <button id="cancel-delete-btn" type="button"
-                                class="px-4 py-1 bg-zinc-300 text-gray-900 font-semibold rounded-md hover:bg-gray-400">
-                                Cancel
-                            </button>
-                            <button type="submit"
-                                class="px-4 py-1 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700">
-                                Delete
-                            </button>
-                        </div>
-                    </form>
-                </x-confirmation-popup>
-
-            </div>
-        </div>
-    </div> -->
 </x-user-layout>

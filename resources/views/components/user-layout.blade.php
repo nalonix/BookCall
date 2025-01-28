@@ -18,34 +18,44 @@
     <script src="{{ asset('js/tailwind.js') }}"></script>
 </head>
 
-<body class="font-sans antialiased dark:bg-black dark:text-white/50">
-    <div>
-        <!-- nav links  -->
-        <ul>
-            <li>
-                <a href="/bookings">Bookings</a>
-            </li>
-            <li>
-                <a href="/profile">Profile</a>
-            </li>
-            <li>
-                <a href="/availablity">Availability</a>
-            </li>
-        </ul>
-    </div>
-    @guest
-    You are a guest.
-    @endguest
-    @auth
-    You are logged in.
-    <form method="POST" action="/logout">
-        @csrf
-        <button class="hover:bg-slate-500 px-3 py-2 rounded-md text-sm font-medium text-white">Log Out</button>
-    </form>
-    @endauth
-    <div class="border-2 border-red-500">
-        {{$slot}}
-    </div>
+<body class="min-h-screen font-sans antialiased dark:bg-black dark:text-white/50">
+    <section class="flex flex-row h-full min-h-screen">
+        <div class="border border-zinc-600 rounded-md m-2 overflow-hidden min-w-[260px]">
+            <!-- logo  -->
+            <h1 class="block text-black dark:text-white text-3xl sm:text-4xl font-bold text-center mb-6 mt-8">BookCall</h1>
+            <div class="flex flex-col h-[80%] justify-between p-2">
+                <!-- nav links  -->
+                <ul class="flex flex-col gap-3">
+                    <li class="p-2 text-center font-semibold rounded-md 
+    {{ request()->is('bookings') ? 'bg-white text-black' : 'bg-zinc-700/50 text-white' }}">
+                        <a href="/bookings" class="block">Bookings</a>
+                    </li>
+                    <li class="p-2 text-center font-semibold rounded-md 
+    {{ request()->is('profile') ? 'bg-white text-black' : 'bg-zinc-700/50 text-white' }}">
+                        <a href="/profile" class="block">Profile</a>
+                    </li>
+
+                    <li class="p-2 text-center font-semibold rounded-md 
+    {{ request()->is('availability') ? 'bg-white text-black' : 'bg-zinc-700/50 text-white' }}">
+                        <a href="/availability" class="block">Availability</a>
+                    </li>
+                </ul>
+                <!-- log out   -->
+                <div>
+                    @auth
+                    <form method="POST" action="/logout">
+                        @csrf
+                        <button class="block w-full py-1 rounded-sm text-center font-semibold cursor-pointer duration-100 ease-in-out bg-zinc-400/25 text-black dark:text-gray-200">Log Out</button>
+                    </form>
+                    @endauth
+                </div>
+            </div>
+        </div>
+        <div class="flex-grow">
+            {{$slot}}
+        </div>
+    </section>
+
 </body>
 
 </html>

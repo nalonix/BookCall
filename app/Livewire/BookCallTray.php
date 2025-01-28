@@ -21,14 +21,11 @@ class BookCallTray extends Component
 
     public function bookCall()
     {
-        // TODO: Validation booking formData
-
         // Split the time into start and end times
         [$startTime, $endTime] = explode(' - ', $this->formData['time']);
 
         // Insert the form data into the database
-        // TODO: extract user id from auth sessoin
-        $res = Booking::create([
+        Booking::create([
             'user_id' => session('user_id'),
             'client_name' => $this->formData['name'],
             'client_email' => $this->formData['email'],
@@ -41,9 +38,7 @@ class BookCallTray extends Component
             'end_time' => $endTime,
         ]);
 
-        dd($res->toArray());
-
-        return redirect('/booked', ['message' => 'booking complete', 'bookingData' => $this->formData]);
+        return redirect('/booked')->with('message', 'booking complete')->with('bookingData', $this->formData);
     }
 
     #[On('inputChange')]

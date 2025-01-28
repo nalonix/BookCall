@@ -3,9 +3,7 @@
         Book a call
     </h1>
     <livewire:call-meta-data />
-    {{ $formData['date'] }}
     <livewire:date-selector />
-    {{ $formData['time'] }}
     <livewire:time-selector />
 
 

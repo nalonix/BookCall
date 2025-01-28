@@ -71,6 +71,7 @@ class UserProfileController extends Controller
 
     public function destroy(Request $request)
     {
+        dd("delete user account");
         if (Auth::guest()) {
             return redirect('/login');
         }
