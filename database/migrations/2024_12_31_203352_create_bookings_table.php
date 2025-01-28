@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
             $table->string('client_name');
             $table->string('client_email');
             $table->string('title');
@@ -23,8 +24,9 @@ return new class extends Migration
             $table->integer('duration');
             $table->time('start_time');
             $table->time('end_time');
-            $table->boolean('confirmed');
-            // TODO: User ID migration
+            $table->boolean('confirmed')->default(false);
+            $table->boolean('canceled')->default(false);
+            $table->boolean('complete')->default(false);
             $table->timestamps();
         });
     }

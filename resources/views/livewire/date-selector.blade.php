@@ -32,7 +32,7 @@
                 <tr>
                     @foreach($row as $cell)
                     <td class="min-w-12 h-12 bg-gray-700 dark:bg-zinc-800 rounded-md overflow-hidden">
-                        @if($cell && in_array(date('l', strtotime($cell)) , session('availableDays')->toArray()))
+                        @if($cell && in_array(date('l', strtotime($cell)), session('availableDays')->toArray()) && strtotime($cell) >= strtotime('tomorrow'))
                         <button wire:click="selectDate('{{ $cell }}')" class="{{ $cell == $selectedDate ? 'bg-black text-white dark:bg-white dark:text-black' : '' }} w-full h-full border-2 border-transparent hover:border-2 hover:border-white rounded-md duration-200 ease-in-out">
                             {{ date('j', strtotime($cell)) }}
                         </button>

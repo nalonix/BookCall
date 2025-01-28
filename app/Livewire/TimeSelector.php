@@ -17,19 +17,34 @@ class TimeSelector extends Component
     public $bookedTimeslots = []; // Booked slots for the selected date
     public $timeslots = []; // Generated available time slots
 
-    // Initialize with today's date
     public function mount()
     {
-        $this->selectedDate = now()->format('Y-m-d');
+        // Calculate the next available date
+        $this->selectedDate = $this->getNextAvailableDate();
+        // Initialize buffer time
         $this->buffer_time = session('user')->buffer_time;
+        // Update the date and fetch availability
         $this->updateDate($this->selectedDate);
+    }
+
+    // Method to calculate the next available date
+    private function getNextAvailableDate()
+    {
+        $availableDays = session('availableDays')->toArray();
+        $date = now()->addDay();
+
+        while (!in_array($date->format('l'), $availableDays)) {
+            $date->addDay();
+        }
+
+        return $date->format('Y-m-d');
     }
 
     // Handle time slot selection
     public function selectTime($timeslot)
     {
         $this->selectedTimeslot = $timeslot;
-        $this->dispatch('timeSelected', $this->selectedTimeslot);
+        $this->dispatch('inputChange', 'time', $this->selectedTimeslot);
     }
 
     // Generate available time slots
@@ -54,14 +69,12 @@ class TimeSelector extends Component
 
     // Update date and fetch availability and bookings
     #[On('dateSelected')]
-    public function updateDate($selectedDate)
+    public function updateDate($date)
     {
-        unset($this->selectedTimeslot);
-        $this->selectedDate = $selectedDate;
-        $day = date('l', strtotime($selectedDate));
+        $this->selectedDate = $date;
+        $day = date('l', strtotime($date));
         $this->dayAvailability = Availability::where('day', $day)->where('user_id', session('user')->id)->first();
-        $this->bookedTimeslots = Booking::where('date', $selectedDate)->pluck('start_time')->toArray();
-        $this->dispatch('timeSelected', $this->dayAvailability);
+        $this->bookedTimeslots = Booking::where('date', $date)->where('user_id', session('user')->id)->pluck('start_time')->toArray();
     }
 
     // Update duration
@@ -70,13 +83,6 @@ class TimeSelector extends Component
     {
         $this->duration = $value;
     }
-
-    #[On('grabBookingData')]
-    public function grabBookingData()
-    {
-        session('bookingDate.selectedTimeslot', $this->selectedTimeslot);
-    }
-
 
     // Render view and calculate time slots
     public function render()

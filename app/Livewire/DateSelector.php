@@ -13,7 +13,15 @@ class DateSelector extends Component
 
     public function mount()
     {
-        $this->selectedDate = now()->format('Y-m-d');
+        $availableDays = session('availableDays')->toArray();
+
+        $date = now()->addDay();
+
+        while (!in_array($date->format('l'), $availableDays)) {
+            $date->addDay();
+        }
+
+        $this->selectedDate = $date->format('Y-m-d');
         $this->viewMonthYear = now()->format('Y-m-d');
         $this->dispatch('dateSelected', $this->selectedDate);
     }
@@ -39,14 +47,8 @@ class DateSelector extends Component
     public function selectDate($date)
     {
         $this->selectedDate = $date;
-        // dd($this->selectedDate);
+        // $this->dispatch('inputChange', 'date', $this->selectedDate);
         $this->dispatch('dateSelected', $this->selectedDate);
-    }
-
-    #[On('grabBookingData')]
-    public function grabBookingData()
-    {
-        session('bookingDate.selectedDate', $this->selectedDate);
     }
 
     public function render()

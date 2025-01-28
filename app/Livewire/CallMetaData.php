@@ -11,6 +11,12 @@ class CallMetaData extends Component
     public $selectedDuration;
     public $name, $email, $title, $description;
 
+    public function onChange($propertyName, $value)
+    {
+        $this->dispatch('inputChange', $propertyName, $value)->to(BookCallTray::class);
+        // dd($propertyName, $this->$propertyName);
+    }
+
     public function mount()
     {
         // Ensure durations are available
@@ -18,6 +24,9 @@ class CallMetaData extends Component
         if (!empty($this->durations)) {
             $this->selectedDuration = $this->durations[0];
         }
+        // $this->title = $data['title'];
+        // $this->selectedDuration = $data['duration'];
+
     }
 
     public function durationChange($value)
@@ -25,6 +34,7 @@ class CallMetaData extends Component
         // Optionally handle logic here when selectedDuration changes
         $this->selectedDuration = $value;
         $this->dispatch('durationChanged', $value);
+        $this->dispatch('inputChange', 'duration', $this->selectedDuration);
     }
 
 

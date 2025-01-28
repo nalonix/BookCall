@@ -28,7 +28,8 @@
             {{ $name }}
             <input
                 type="text"
-                wire:model.defer="name"
+                wire:model.lazy="name"
+                wire:change="onChange('name', $event.target.value)"
                 class="w-full h-10 p-1 bg-zinc-500/50 dark:bg-zinc-800 rounded-md outline-none 
                        focus:ring focus:ring-black dark:focus:ring-white duration-300 ease-in-out"
                 placeholder="Name">
@@ -38,7 +39,8 @@
             {{ $email }}
             <input
                 type="email"
-                wire:model.defer="email"
+                wire:model.lazy="email"
+                wire:change="onChange('email', $event.target.value)"
                 class="w-full h-10 p-1 bg-zinc-500/50 dark:bg-zinc-800 rounded-md outline-none 
                        focus:ring focus:ring-black dark:focus:ring-white duration-300 ease-in-out"
                 placeholder="Email">
@@ -48,7 +50,8 @@
             {{ $title }}
             <input
                 type="text"
-                wire:model.defer="title"
+                wire:model.lazy="title"
+                wire:change="onChange('title', $event.target.value)"
                 class="w-full h-10 p-1 bg-zinc-500/50 dark:bg-zinc-800 rounded-md outline-none 
                        focus:ring focus:ring-black dark:focus:ring-white duration-300 ease-in-out"
                 placeholder="Title">
@@ -57,7 +60,8 @@
             Description
             {{ $description }}
             <textarea
-                wire:model.defer="description"
+                wire:model.lazy="description"
+                wire:change="onChange('description', $event.target.value)"
                 class="w-full min-h-24 p-1 bg-zinc-500/50 dark:bg-zinc-800 rounded-md outline-none 
                        focus:ring focus:ring-black dark:focus:ring-white duration-300 ease-in-out"
                 placeholder="Description"></textarea>
