@@ -19,7 +19,7 @@
 </head>
 
 <body class="min-h-screen font-sans antialiased dark:bg-black dark:text-white/50">
-    <section class="flex flex-row h-full min-h-screen">
+    <section class="flex flex-col sm:flex-row h-full min-h-screen">
         <div class="border border-zinc-600 rounded-md m-2 overflow-hidden min-w-[260px]">
             <!-- logo  -->
             <h1 class="block text-black dark:text-white text-3xl sm:text-4xl font-bold text-center mb-6 mt-8">BookCall</h1>
@@ -41,11 +41,11 @@
                     </li>
                 </ul>
                 <!-- log out   -->
-                <div>
+                <div class="mt-5">
                     @auth
                     <form method="POST" action="/logout">
                         @csrf
-                        <button class="block w-full py-1 rounded-sm text-center font-semibold cursor-pointer duration-100 ease-in-out bg-zinc-400/25 text-black dark:text-gray-200">Log Out</button>
+                        <button class="block w-full py-1 rounded-md text-center font-semibold cursor-pointer duration-100 ease-in-out bg-red-700/55 text-black dark:text-gray-200">Log Out</button>
                     </form>
                     @endauth
                 </div>

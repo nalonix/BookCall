@@ -76,6 +76,10 @@ class UserBookingController extends Controller
             'meeting_link' => $request->meeting_link,
         ]);
 
+        // Can't test with out SMTP server ⚠️
+        // Send email to the booker
+        // Mail::to($booking->booker_email)->send(new MeetingConfirmed($request->meeting_link));
+
         return redirect()->back()->with('success', 'Booking confirmed successfully.');
     }
 

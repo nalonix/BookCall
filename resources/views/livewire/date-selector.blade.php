@@ -1,18 +1,13 @@
 <div>
-    <h1>Date selector</h1>
-
     <div>
         <div class="flex flex-row gap-4 border-2 border-black">
-            <h2>
-                {{date('F', strtotime($viewMonthYear))}}
-            </h2>
-            <h2>
-                {{date('Y', strtotime($viewMonthYear))}}
+            <h2 class="text-3xl font-bold ">
+                {{date('F', strtotime($viewMonthYear))}} {{date('Y', strtotime($viewMonthYear))}}
             </h2>
         </div>
-        <div>
-            <button wire:click="backMonth">⬅️</button>
-            <button wire:click="forwardMonth">➡️</button>
+        <div class="flex flex-row justify-between gap-4 mt-2">
+            <button wire:click="backMonth" class="bg-zinc-700/50 hover:bg-zinc-800/50 px-2 py-1 rounded-md">Return</button>
+            <button wire:click="forwardMonth" class="bg-zinc-700/50 hover:bg-zinc-800/50 px-2 py-1 rounded-md">Next</button>
         </div>
     </div>
     <div>
